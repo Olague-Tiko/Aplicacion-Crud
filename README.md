@@ -6,7 +6,7 @@ Segundo Proyecto de bootcam
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Landing Page - Mi Producto</title>
+  <title>Landing Page - Sala de lectura</title>
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <!-- Estilos personalizados -->
@@ -121,6 +121,59 @@ Segundo Proyecto de bootcam
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       margin-bottom: 30px;
     }
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Testimonios</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Estilos personalizados para los controles del carrusel -->
+  <style>
+    /* Quitamos los iconos originales */
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      display: none;
+    }
+
+    /* Botones con forma OVNI (ovalo ancho) */
+    .carousel-control-prev,
+    .carousel-control-next {
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 50px;
+      width: 130px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.85;
+      transition: background-color 0.3s ease, opacity 0.3s ease;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      text-transform: uppercase;
+      border: 2px solid transparent;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+      background-color: rgba(0, 0, 0, 0.9);
+      opacity: 1;
+      border-color: white;
+    }
+
+    /* Posicionar los botones un poco más adentro */
+    .carousel-control-prev {
+      left: 15px;
+    }
+    .carousel-control-next {
+      right: 15px;
+    }
    
     /* =========================
        Contact Section
@@ -140,28 +193,44 @@ Segundo Proyecto de bootcam
     }
   </style>
 </head>
+
+<!-- Bootstrap Bundle JS (incluye Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <body>
   <!-- =========================
        Navbar
   ============================ -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-      <a class="navbar-brand" href="#">MiProducto</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item"><a class="nav-link" href="#hero">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#about">Acerca de</a></li>
-          <li class="nav-item"><a class="nav-link" href="#gallery">Galería</a></li>
-          <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonios</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contacto</a></li>
-        </ul>
-      </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="#">El michi cyberpunk</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a class="nav-link" href="#hero">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about">Acerca de</a></li>
+        <li class="nav-item"><a class="nav-link" href="#gallery">Galería</a></li>
+        <li class="nav-item"><a class="nav-link" href="#testimonials">Comentarios</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contacto</a></li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
+
+<style>
+  /* Estilo al pasar el mouse por un enlace del menú */
+  .navbar-nav .nav-link:hover {
+    background-color: #000;        /* Fondo negro */
+    color: #fff !important;        /* Texto blanco */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    border-radius: 6px;
+    padding: 6px 12px;
+    transition: all 0.3s ease;
+  }
+</style>
  
   <!-- =========================
        Hero Section
@@ -205,73 +274,160 @@ Segundo Proyecto de bootcam
        Sección de Galería con 8 productos
   ============================ -->
   <section id="gallery" class="gallery">
-    <div class="container">
-      <h2 class="text-center mb-5">Galería</h2>
-      <div class="gallery-grid">
-        <!-- Producto 1 -->
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Producto 1">
-        </div>
-        <!-- Producto 2 -->
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1564869739735-722eb8c5b310?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Producto 2">
-        </div>
-        <!-- Producto 3 -->
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1611078484821-1abf8cbd64e1?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Producto 3">
-        </div>
-        <!-- Producto 4 -->
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1581291519195-ef11498d1cf2?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Producto 4">
-        </div>
-        <!-- Producto 5 -->
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Producto 5">
-        </div>
-        <!-- Producto 6 -->
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1595433324234-cf80d466dd3c?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Producto 6">
-        </div>
-        <!-- Producto 7 -->
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1572432038751-05d2d189e8e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Producto 7">
-        </div>
-        <!-- Producto 8 -->
-        <div class="gallery-item">
-          <img src="https://images.unsplash.com/photo-1572432038754-1e581c04dd1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80" alt="Producto 8">
-        </div>
+  <div class="container">
+    <h2 class="text-center mb-5">Galería</h2>
+    <div class="gallery-grid d-flex flex-wrap justify-content-center gap-3">
+      <!-- Producto 1 -->
+      <div class="gallery-item">
+        <img src="https://covers.storytel.com/jpg-640/9788445004760.8baca47a-b2f8-4a49-818b-969e173714d2?optimize=high&quality=70&width=600" alt="Producto 1" class="img-clickable">
+      </div>
+      <!-- Producto 2 -->
+      <div class="gallery-item">
+        <img src="https://imagessl0.casadellibro.com/a/l/s5/40/9788435021340.webp" alt="Producto 2" class="img-clickable">
+      </div>
+      <!-- Producto 3 -->
+      <div class="gallery-item">
+        <img src="https://www.elsotano.com/sotano_covers/9788418/9788418765148.jpg" alt="Producto 3" class="img-clickable">
+      </div>
+      <!-- Producto 4 -->
+      <div class="gallery-item">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiR7Ww5sx1TO6poz2N3Jy0m0khozarqXwp64VxnYF-0RK35kZL2tSnWlDRxVidbiiIwuQsFH10_uMCGaQHLzqmG01lg78XHTjFboGdL2C7Pek9JTRbRTCw4ySDrS8eCDjZ3FtOQAgcwwV-7/s320/Dune%252C+de+Frank+Herbert.jpg" alt="Producto 4" class="img-clickable">
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
+<!-- Modal de imagen -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-dark">
+      <div class="modal-body p-0 d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <img src="" alt="Vista previa" id="modalImage" class="img-fluid modal-img" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .gallery-item {
+    width: 200px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-item img:hover {
+    transform: scale(1.05);
+  }
+
+  .modal-img {
+    max-height: 90vh;         /* Imagen no supera el 90% de la pantalla */
+    max-width: 95vw;          /* Ancho máximo del viewport */
+    object-fit: contain;      /* Asegura que se vea toda sin recorte */
+    border-radius: 10px;
+  }
+
+  .modal-content {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+  }
+</style>
+
+<!-- JavaScript para mostrar la imagen en el modal -->
+<script>
+  document.querySelectorAll('.img-clickable').forEach(img => {
+    img.addEventListener('click', function () {
+      const modalImg = document.getElementById('modalImage');
+      modalImg.src = this.src;
+      const imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+      imageModal.show();
+    });
+  });
+</script>
+
+<!-- Bootstrap JS (asegúrate de incluir esto si no lo tienes ya) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
  
   <!-- =========================
        Testimonials Section
   ============================ -->
-  <section id="testimonials" class="testimonials">
+ <section id="testimonials" class="testimonials">
     <div class="container">
-      <h2 class="text-center mb-5">Testimonios</h2>
-      <div class="row">
-        <div class="col-md-4">
-          <div class="testimonial">
-            <p>"MiProducto ha cambiado mi forma de trabajar. ¡Es increíble!"</p>
-            <h5 class="mt-3">Juan Pérez</h5>
+      <h2 class="text-center mb-5">Comentarios</h2>
+
+      <div id="testimonialCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="8000">
+        <div class="carousel-inner text-center">
+
+          <div class="carousel-item active">
+            <div class="testimonial mx-auto" style="max-width: 700px;">
+              <p>"Me encanta el círculo de lectura por la noche. Disfruto compartir ideas y me sirve para relajarme entre semana sin salir de casa".</p>
+              <h5 class="mt-3">Andres Manuel López Obrador</h5>
+            </div>
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="testimonial">
-            <p>"La innovación y calidad de este producto son insuperables."</p>
-            <h5 class="mt-3">María López</h5>
+
+          <div class="carousel-item">
+            <div class="testimonial mx-auto" style="max-width: 700px;">
+              <p>"Alberto es un buen moderador. Fomenta la participación y también nos invita a que nosotros propongamos lecturas para las sesiones".</p>
+              <h5 class="mt-3">Cucho</h5>
+            </div>
           </div>
-        </div>
-        <div class="col-md-4">
-          <div class="testimonial">
-            <p>"Recomiendo MiProducto a todos los que buscan eficiencia y estilo."</p>
-            <h5 class="mt-3">Carlos Sánchez</h5>
+
+          <div class="carousel-item">
+            <div class="testimonial mx-auto" style="max-width: 700px;">
+              <p>"Les recomiendo participar en las actividades. Me gusta que no siento como si debiera leer por obligación como en la escuela y disfruto más la lectura".</p>
+              <h5 class="mt-3">Kevin Mier</h5>
+            </div>
           </div>
+
+          <div class="carousel-item">
+            <div class="testimonial mx-auto" style="max-width: 700px;">
+              <p>"Me fascina la ciencia ficción y creo que encontré el lugar correcto para explorar, literalmente, nuevos mundos".</p>
+              <h5 class="mt-3">Melisandre Olague</h5>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="testimonial mx-auto" style="max-width: 700px;">
+              <p>"No sabía cuánto existía referente a la ciencia ficción. Lo mejor es que no solo leemos, sino también vemos películas y las comentamos".</p>
+              <h5 class="mt-3">Kariniwi</h5>
+            </div>
+          </div>
+
         </div>
+
+        <!-- Controles -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Siguiente</span>
+        </button>
       </div>
     </div>
   </section>
+
+  <!-- Bootstrap JS Bundle (incluye Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
  
   <!-- =========================
        Contact Section
