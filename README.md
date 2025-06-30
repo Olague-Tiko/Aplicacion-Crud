@@ -674,7 +674,7 @@
   ============================ -->
   <footer class="text-center">
     <div class="container">
-      <p>&copy; 2025 MiProducto, Inc. Todos los derechos reservados.</p>
+      <p>&copy; 2025 Tikosolutions, Inc. Todos los derechos reservados.</p>
     </div>
   </footer>
  
