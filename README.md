@@ -432,7 +432,7 @@ Segundo Proyecto de bootcam
   <!-- =========================
        Contact Section
   ============================ -->
-   <section id="contact" class="py-5">
+  <section id="contact" class="py-5">
   <div class="container">
     <h2 class="text-center mb-5">Contacto</h2>
     <div class="row">
@@ -499,6 +499,78 @@ Segundo Proyecto de bootcam
     </div>
   </div>
 </section>
+
+<!-- Script para validación y almacenamiento -->
+<script>
+  const form = document.getElementById("contactForm");
+  const alerta = document.getElementById("alertaCampos");
+
+  // Cargar datos guardados si existen
+  window.addEventListener("DOMContentLoaded", () => {
+    const data = JSON.parse(localStorage.getItem("contactFormData"));
+    if (data) {
+      document.getElementById("name").value = data.name || "";
+      document.getElementById("email").value = data.email || "";
+      document.getElementById("message").value = data.message || "";
+      document.getElementById("genero").value = data.genero || "";
+
+      const actividades = document.querySelectorAll(".actividad");
+      actividades.forEach(input => {
+        input.checked = data.actividades?.includes(input.value);
+      });
+    }
+  });
+
+  // Validación y guardado
+  form.addEventListener("submit", function(event) {
+    event.preventDefault(); // Detener envío
+
+    alerta.classList.add("d-none");
+
+    const name = document.getElementById("name");
+    const email = document.getElementById("email");
+    const message = document.getElementById("message");
+    const genero = document.getElementById("genero");
+    const actividades = document.querySelectorAll(".actividad");
+
+    let campos = [name, email, message, genero];
+    let actividadSeleccionada = false;
+
+    actividades.forEach(act => {
+      if (act.checked) actividadSeleccionada = true;
+    });
+
+    let campoFaltante = campos.find(campo => !campo.value || campo.value === "");
+
+    if (campoFaltante) {
+      alerta.classList.remove("d-none");
+      campoFaltante.focus();
+      return;
+    }
+
+    if (!actividadSeleccionada) {
+      alerta.classList.remove("d-none");
+      actividades[0].focus();
+      return;
+    }
+
+    // Guardar en localStorage
+    const datosFormulario = {
+      name: name.value,
+      email: email.value,
+      message: message.value,
+      genero: genero.value,
+      actividades: Array.from(actividades)
+        .filter(act => act.checked)
+        .map(act => act.value)
+    };
+
+    localStorage.setItem("contactFormData", JSON.stringify(datosFormulario));
+
+    alert("Formulario enviado correctamente. Los datos se han guardado.");
+    form.reset();
+  });
+</script>
 
 <!-- Script de validación -->
 <script>
