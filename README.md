@@ -432,144 +432,155 @@ Segundo Proyecto de bootcam
   <!-- =========================
        Contact Section
   ============================ -->
-  <section id="contact" class="py-5">
-  <div class="container">
-    <h2 class="text-center mb-5">Contacto</h2>
-    <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <form id="contactForm">
-          <!-- Alerta de validación -->
-          <div id="alertaCampos" class="alert alert-danger d-none" role="alert">
-            Faltan campos por llenar.
-          </div>
+  <div class="container py-5">
+  <h2 class="text-center mb-4">Registro Literario (CRUD)</h2>
 
-          <!-- Campo de nombre -->
-          <div class="form-group">
-            <label for="name">Nombre</label>
-            <input type="text" class="form-control" id="name" placeholder="Ingresa tu nombre" required>
-          </div>
-
-          <!-- Campo de correo -->
-          <div class="form-group">
-            <label for="email">Correo electrónico</label>
-            <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo" required>
-          </div>
-
-          <!-- Campo de mensaje -->
-          <div class="form-group">
-            <label for="message">Mensaje</label>
-            <textarea class="form-control" id="message" rows="5" placeholder="Escribe tu mensaje" required></textarea>
-          </div>
-
-          <!-- Género literario favorito -->
-          <div class="form-group">
-            <label for="genero">Género literario favorito</label>
-            <select class="form-control" id="genero" required>
-              <option value="" disabled selected>Selecciona un género</option>
-              <option value="fantasia">Fantasía</option>
-              <option value="ciencia-ficcion">Ciencia Ficción</option>
-              <option value="romance">Romance</option>
-              <option value="misterio">Misterio</option>
-              <option value="no-ficcion">No ficción</option>
-              <option value="otro">Otro</option>
-            </select>
-          </div>
-
-          <!-- Actividades disponibles -->
-          <div class="form-group">
-            <label>¿En qué actividad deseas participar?</label><br>
-            <div class="form-check">
-              <input class="form-check-input actividad" type="checkbox" id="circulo" value="circulo">
-              <label class="form-check-label" for="circulo">Círculo de lectura</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input actividad" type="checkbox" id="blog" value="blog">
-              <label class="form-check-label" for="blog">Reseñas en blog</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input actividad" type="checkbox" id="video" value="video">
-              <label class="form-check-label" for="video">Video-reseñas</label>
-            </div>
-          </div>
-
-          <!-- Botón de enviar -->
-          <button type="submit" class="btn btn-primary btn-block">Enviar</button>
-        </form>
+  <!-- Formulario -->
+  <div class="form-section">
+    <form id="crudForm">
+      <input type="hidden" id="registroId">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" id="name" class="form-control" required>
       </div>
-    </div>
+      <div class="form-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="email" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label>Mensaje</label>
+        <textarea id="message" class="form-control" rows="3" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Género literario favorito</label>
+        <select id="genero" class="form-control" required>
+          <option value="" disabled selected>Selecciona un género</option>
+          <option value="fantasia">Fantasía</option>
+          <option value="ciencia-ficcion">Ciencia Ficción</option>
+          <option value="romance">Romance</option>
+          <option value="misterio">Misterio</option>
+          <option value="no-ficcion">No ficción</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Actividades</label><br>
+        <div class="form-check">
+          <input class="form-check-input actividad" type="checkbox" value="circulo" id="circulo">
+          <label class="form-check-label" for="circulo">Círculo de lectura</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input actividad" type="checkbox" value="blog" id="blog">
+          <label class="form-check-label" for="blog">Reseñas en blog</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input actividad" type="checkbox" value="video" id="video">
+          <label class="form-check-label" for="video">Video-reseñas</label>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Guardar</button>
+    </form>
   </div>
-</section>
 
-<!-- Script para validación y almacenamiento -->
+  <!-- Tabla de registros -->
+  <div>
+    <h4 class="mb-3">Registros guardados</h4>
+    <table class="table table-bordered table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Género</th>
+          <th>Actividades</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tablaRegistros"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- JavaScript -->
 <script>
-  const form = document.getElementById("contactForm");
-  const alerta = document.getElementById("alertaCampos");
+  let registros = JSON.parse(localStorage.getItem("registrosLiterarios")) || [];
 
-  // Cargar datos guardados si existen
-  window.addEventListener("DOMContentLoaded", () => {
-    const data = JSON.parse(localStorage.getItem("contactFormData"));
-    if (data) {
-      document.getElementById("name").value = data.name || "";
-      document.getElementById("email").value = data.email || "";
-      document.getElementById("message").value = data.message || "";
-      document.getElementById("genero").value = data.genero || "";
-
-      const actividades = document.querySelectorAll(".actividad");
-      actividades.forEach(input => {
-        input.checked = data.actividades?.includes(input.value);
-      });
-    }
-  });
-
-  // Validación y guardado
-  form.addEventListener("submit", function(event) {
-    event.preventDefault(); // Detener envío
-
-    alerta.classList.add("d-none");
-
-    const name = document.getElementById("name");
-    const email = document.getElementById("email");
-    const message = document.getElementById("message");
-    const genero = document.getElementById("genero");
-    const actividades = document.querySelectorAll(".actividad");
-
-    let campos = [name, email, message, genero];
-    let actividadSeleccionada = false;
-
-    actividades.forEach(act => {
-      if (act.checked) actividadSeleccionada = true;
+  function renderizarTabla() {
+    const tabla = document.getElementById("tablaRegistros");
+    tabla.innerHTML = "";
+    registros.forEach((registro, index) => {
+      const row = `
+        <tr>
+          <td>${registro.name}</td>
+          <td>${registro.email}</td>
+          <td>${registro.genero}</td>
+          <td>${registro.actividades.join(", ")}</td>
+          <td>
+            <button class="btn btn-sm btn-warning" onclick="editarRegistro(${index})">Editar</button>
+            <button class="btn btn-sm btn-danger" onclick="eliminarRegistro(${index})">Eliminar</button>
+          </td>
+        </tr>
+      `;
+      tabla.innerHTML += row;
     });
+  }
 
-    let campoFaltante = campos.find(campo => !campo.value || campo.value === "");
+  function guardarEnLocalStorage() {
+    localStorage.setItem("registrosLiterarios", JSON.stringify(registros));
+  }
 
-    if (campoFaltante) {
-      alerta.classList.remove("d-none");
-      campoFaltante.focus();
+  document.getElementById("crudForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const id = document.getElementById("registroId").value;
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
+    const genero = document.getElementById("genero").value;
+    const actividades = Array.from(document.querySelectorAll(".actividad:checked")).map(el => el.value);
+
+    if (!name || !email || !message || !genero || actividades.length === 0) {
+      alert("Faltan campos por llenar.");
       return;
     }
 
-    if (!actividadSeleccionada) {
-      alerta.classList.remove("d-none");
-      actividades[0].focus();
-      return;
+    const nuevoRegistro = { name, email, message, genero, actividades };
+
+    if (id === "") {
+      registros.push(nuevoRegistro);
+    } else {
+      registros[id] = nuevoRegistro;
+      document.getElementById("registroId").value = "";
     }
 
-    // Guardar en localStorage
-    const datosFormulario = {
-      name: name.value,
-      email: email.value,
-      message: message.value,
-      genero: genero.value,
-      actividades: Array.from(actividades)
-        .filter(act => act.checked)
-        .map(act => act.value)
-    };
-
-    localStorage.setItem("contactFormData", JSON.stringify(datosFormulario));
-
-    alert("Formulario enviado correctamente. Los datos se han guardado.");
-    form.reset();
+    guardarEnLocalStorage();
+    renderizarTabla();
+    this.reset();
   });
+
+  function editarRegistro(index) {
+    const r = registros[index];
+    document.getElementById("registroId").value = index;
+    document.getElementById("name").value = r.name;
+    document.getElementById("email").value = r.email;
+    document.getElementById("message").value = r.message;
+    document.getElementById("genero").value = r.genero;
+
+    const checkboxes = document.querySelectorAll(".actividad");
+    checkboxes.forEach(cb => {
+      cb.checked = r.actividades.includes(cb.value);
+    });
+  }
+
+  function eliminarRegistro(index) {
+    if (confirm("¿Estás seguro de eliminar este registro?")) {
+      registros.splice(index, 1);
+      guardarEnLocalStorage();
+      renderizarTabla();
+    }
+  }
+
+  // Inicializa la tabla al cargar
+  renderizarTabla();
 </script>
 
 <!-- Script de validación -->
