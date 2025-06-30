@@ -1,9 +1,15 @@
-# Aplicacion-Crud
-Segundo Proyecto de bootcam
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
+<meta charset="UTF-8">
+  <title>CRUD Literario</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .form-section { margin-bottom: 30px; }
+    .table td, .table th { vertical-align: middle; }
+  </style>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Landing Page - Sala de lectura</title>
@@ -178,11 +184,19 @@ Segundo Proyecto de bootcam
     /* =========================
        Contact Section
     ============================ */
+    meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title>Registro Lector CRUD con Historial</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
+    
     #contact {
       background-color: #fff;
       padding: 80px 0;
     }
    
+
+
     /* =========================
        Footer
     ============================ */
@@ -242,7 +256,7 @@ Segundo Proyecto de bootcam
     <p class="lead" style="margin-top: 2cm;">Sala de lectura.</p>
     
     <a href="#about" class="btn btn-primary btn-lg" style="margin-top: 2cm; display: inline-block;">
-      Conocer Actividades
+      Conocer más
     </a>
   </div>
   </section>
@@ -432,9 +446,10 @@ Segundo Proyecto de bootcam
   <!-- =========================
        Contact Section
   ============================ -->
-  <!-- Contenedor único para mostrar el registro del usuario -->
+<!-- Formulario de contacto -->
+<!-- Contenedor único para mostrar el registro del usuario -->
 <div class="container py-5">
-  <h2 class="text-center mb-4">Mi Registro Lector</h2>
+  <h2 class="text-center mb-4">Registro Lector</h2>
 
   <div id="usuarioRegistroPanel">
     <!-- Aquí se cargará el registro del usuario -->
@@ -548,6 +563,19 @@ Segundo Proyecto de bootcam
     guardarEnLocalStorage();
   }
 
+  function registrarEliminacion(idRegistro, datosEliminados) {
+  const historial = JSON.parse(localStorage.getItem("historialCambios")) || [];
+
+  historial.push({
+    idRegistro: idRegistro,
+    accion: "eliminacion",
+    datos: datosEliminados,
+    fecha: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("historialCambios", JSON.stringify(historial));
+}
+
   document.getElementById("crudForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -618,21 +646,13 @@ Segundo Proyecto de bootcam
   }
 
   function eliminarRegistro(index) {
-    if (registros[index].finalizado) {
-      alert("Este registro está finalizado y no puede eliminarse.");
-      return;
-    }
-    if (confirm("¿Estás seguro de eliminar tu registro?")) {
-      registrarCambio(index, "ELIMINAR", JSON.stringify(registros[index]), "");
-      registros.splice(index, 1);
-      localStorage.removeItem("registroActual");
-      registroActual = null;
-      guardarEnLocalStorage();
-      renderUsuarioRegistro();
-      document.getElementById("crudForm").reset();
-      document.getElementById("registroId").value = "";
-    }
+  if (confirm("¿Estás seguro de eliminar este registro?")) {
+    registrarEliminacion(index, registros[index]); // Guarda el historial antes de eliminar
+    registros.splice(index, 1);
+    localStorage.setItem("registrosLiterarios", JSON.stringify(registros));
+    renderizarTabla();
   }
+}
 
   function finalizarRegistro(index) {
     if (confirm("¿Deseas finalizar tu registro? No podrás modificarlo después.")) {
@@ -648,7 +668,7 @@ Segundo Proyecto de bootcam
   // Inicializar vista
   renderUsuarioRegistro();
 </script>
- 
+
   <!-- =========================
        Footer
   ============================ -->
