@@ -433,33 +433,65 @@ Segundo Proyecto de bootcam
        Contact Section
   ============================ -->
   <section id="contact" class="py-5">
-    <div class="container">
-      <h2 class="text-center mb-5">Contacto</h2>
-      <div class="row">
-        <div class="col-md-8 offset-md-2">
-          <form>
-            <!-- Campo de nombre -->
-            <div class="form-group">
-              <label for="name">Nombre</label>
-              <input type="text" class="form-control" id="name" placeholder="Ingresa tu nombre">
+  <div class="container">
+    <h2 class="text-center mb-5">Contacto</h2>
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <form>
+          <!-- Campo de nombre -->
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" class="form-control" id="name" placeholder="Ingresa tu nombre">
+          </div>
+          <!-- Campo de correo -->
+          <div class="form-group">
+            <label for="email">Correo electrónico</label>
+            <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo">
+          </div>
+          <!-- Campo de mensaje -->
+          <div class="form-group">
+            <label for="message">¿Por qué deseas participar?</label>
+            <textarea class="form-control" id="message" rows="5" placeholder="Escribe tu mensaje"></textarea>
+          </div>
+
+          <!-- Género literario favorito -->
+          <div class="form-group">
+            <label for="genero">Género literario favorito</label>
+            <select class="form-control" id="genero" name="genero">
+              <option value="" disabled selected>Selecciona un género</option>
+              <option value="fantasia">Fantasía</option>
+              <option value="ciencia-ficcion">Ciencia Ficción</option>
+              <option value="romance">Romance</option>
+              <option value="misterio">Misterio</option>
+              <option value="no-ficcion">No ficción</option>
+              <option value="otro">Otro</option>
+            </select>
+          </div>
+
+          <!-- Actividades disponibles -->
+          <div class="form-group">
+            <label>¿En qué actividad deseas participar?</label><br>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="circulo" name="actividad" value="circulo">
+              <label class="form-check-label" for="circulo">Círculo de lectura</label>
             </div>
-            <!-- Campo de correo -->
-            <div class="form-group">
-              <label for="email">Correo electrónico</label>
-              <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="blog" name="actividad" value="blog">
+              <label class="form-check-label" for="blog">Reseñas en blog</label>
             </div>
-            <!-- Campo de mensaje -->
-            <div class="form-group">
-              <label for="message">Mensaje</label>
-              <textarea class="form-control" id="message" rows="5" placeholder="Escribe tu mensaje"></textarea>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="video" name="actividad" value="video">
+              <label class="form-check-label" for="video">Video-reseñas</label>
             </div>
-            <!-- Botón de enviar -->
-            <button type="submit" class="btn btn-primary btn-block">Enviar</button>
-          </form>
-        </div>
+          </div>
+
+          <!-- Botón de enviar -->
+          <button type="submit" class="btn btn-primary btn-block">Enviar</button>
+        </form>
       </div>
     </div>
-  </section>
+  </div>
+</section>
  
   <!-- =========================
        Footer
