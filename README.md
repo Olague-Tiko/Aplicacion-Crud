@@ -432,13 +432,18 @@ Segundo Proyecto de bootcam
   <!-- =========================
        Contact Section
   ============================ -->
-  <div class="container py-5">
-  <h2 class="text-center mb-4">Registro Literario (CRUD)</h2>
+  <!-- Contenedor único para mostrar el registro del usuario -->
+<div class="container py-5">
+  <h2 class="text-center mb-4">Mi Registro Lector</h2>
+
+  <div id="usuarioRegistroPanel">
+    <!-- Aquí se cargará el registro del usuario -->
+  </div>
 
   <!-- Formulario -->
   <div class="form-section">
     <form id="crudForm">
-      <input type="hidden" id="registroId">
+      <input type="hidden" id="registroId" value="">
       <div class="form-group">
         <label>Nombre</label>
         <input type="text" id="name" class="form-control" required>
@@ -448,7 +453,7 @@ Segundo Proyecto de bootcam
         <input type="email" id="email" class="form-control" required>
       </div>
       <div class="form-group">
-        <label>Mensaje</label>
+        <label>¿Por qué quieres participar?</label>
         <textarea id="message" class="form-control" rows="3" required></textarea>
       </div>
       <div class="form-group">
@@ -481,60 +486,75 @@ Segundo Proyecto de bootcam
       <button type="submit" class="btn btn-primary btn-block">Guardar</button>
     </form>
   </div>
-
-  <!-- Tabla de registros -->
-  <div>
-    <h4 class="mb-3">Registros guardados</h4>
-    <table class="table table-bordered table-hover">
-      <thead class="thead-light">
-        <tr>
-          <th>Nombre</th>
-          <th>Correo</th>
-          <th>Género</th>
-          <th>Actividades</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="tablaRegistros"></tbody>
-    </table>
-  </div>
 </div>
 
-<!-- JavaScript -->
 <script>
   let registros = JSON.parse(localStorage.getItem("registrosLiterarios")) || [];
+  let historial = JSON.parse(localStorage.getItem("historialCambios")) || [];
+  let registroActual = localStorage.getItem("registroActual");
 
-  function renderizarTabla() {
-    const tabla = document.getElementById("tablaRegistros");
-    tabla.innerHTML = "";
-    registros.forEach((registro, index) => {
-      const row = `
-        <tr>
-          <td>${registro.name}</td>
-          <td>${registro.email}</td>
-          <td>${registro.genero}</td>
-          <td>${registro.actividades.join(", ")}</td>
-          <td>
-            <button class="btn btn-sm btn-warning" onclick="editarRegistro(${index})">Editar</button>
-            <button class="btn btn-sm btn-danger" onclick="eliminarRegistro(${index})">Eliminar</button>
-          </td>
-        </tr>
+  // Renderiza solo el registro del usuario actual o mensaje si no existe
+  function renderUsuarioRegistro() {
+    const panel = document.getElementById("usuarioRegistroPanel");
+    panel.innerHTML = "";
+
+    if (registroActual === null || !registros[registroActual]) {
+      panel.innerHTML = `<p>No tienes un registro todavía. Por favor llena el formulario para crear uno.</p>`;
+      return;
+    }
+
+    const r = registros[registroActual];
+    const finalizado = r.finalizado ? true : false;
+
+    let actividadesText = r.actividades.join(", ");
+
+    let acciones = "";
+
+    if (!finalizado) {
+      acciones = `
+        <button class="btn btn-warning mr-2" onclick="editarRegistro(${registroActual})">Editar mi registro</button>
+        <button class="btn btn-danger mr-2" onclick="eliminarRegistro(${registroActual})">Eliminar mi registro</button>
+        <button class="btn btn-success" onclick="finalizarRegistro(${registroActual})">Finalizar mi registro</button>
       `;
-      tabla.innerHTML += row;
-    });
+    } else {
+      acciones = `<span class="text-success font-weight-bold">Registro finalizado</span>`;
+    }
+
+    panel.innerHTML = `
+      <table class="table table-bordered w-75 mx-auto">
+        <tr><th>Nombre</th><td>${r.name}</td></tr>
+        <tr><th>Correo</th><td>${r.email}</td></tr>
+        <tr><th>Mensaje</th><td>${r.message}</td></tr>
+        <tr><th>Género literario favorito</th><td>${r.genero}</td></tr>
+        <tr><th>Actividades</th><td>${actividadesText}</td></tr>
+        <tr><th>Acciones</th><td>${acciones}</td></tr>
+      </table>
+    `;
   }
 
   function guardarEnLocalStorage() {
     localStorage.setItem("registrosLiterarios", JSON.stringify(registros));
+    localStorage.setItem("historialCambios", JSON.stringify(historial));
+  }
+
+  function registrarCambio(id, campo, anterior, nuevo) {
+    historial.push({
+      idRegistro: id,
+      campo,
+      anterior,
+      nuevo,
+      fecha: new Date().toLocaleString()
+    });
+    guardarEnLocalStorage();
   }
 
   document.getElementById("crudForm").addEventListener("submit", function (e) {
     e.preventDefault();
 
     const id = document.getElementById("registroId").value;
-    const name = document.getElementById("name").value;
-    const email = document.getElementById("email").value;
-    const message = document.getElementById("message").value;
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const message = document.getElementById("message").value.trim();
     const genero = document.getElementById("genero").value;
     const actividades = Array.from(document.querySelectorAll(".actividad:checked")).map(el => el.value);
 
@@ -543,88 +563,90 @@ Segundo Proyecto de bootcam
       return;
     }
 
-    const nuevoRegistro = { name, email, message, genero, actividades };
+    const nuevoRegistro = { name, email, message, genero, actividades, finalizado: false };
 
     if (id === "") {
+      // Crear nuevo registro
       registros.push(nuevoRegistro);
+      registroActual = (registros.length - 1).toString();
+      localStorage.setItem("registroActual", registroActual);
+      registrarCambio(registroActual, "CREAR", "", JSON.stringify(nuevoRegistro));
     } else {
-      registros[id] = nuevoRegistro;
-      document.getElementById("registroId").value = "";
+      const index = parseInt(id);
+      const original = registros[index];
+      if (original.finalizado) {
+        alert("Este registro está finalizado y no puede modificarse.");
+        return;
+      }
+
+      if (original.name !== name) registrarCambio(index, "name", original.name, name);
+      if (original.email !== email) registrarCambio(index, "email", original.email, email);
+      if (original.message !== message) registrarCambio(index, "message", original.message, message);
+      if (original.genero !== genero) registrarCambio(index, "genero", original.genero, genero);
+
+      const originalActividades = original.actividades.sort().join(",");
+      const nuevasActividades = actividades.sort().join(",");
+      if (originalActividades !== nuevasActividades) {
+        registrarCambio(index, "actividades", originalActividades, nuevasActividades);
+      }
+
+      nuevoRegistro.finalizado = original.finalizado;
+      registros[index] = nuevoRegistro;
     }
 
     guardarEnLocalStorage();
-    renderizarTabla();
+    renderUsuarioRegistro();
     this.reset();
+    document.getElementById("registroId").value = "";
   });
 
   function editarRegistro(index) {
     const r = registros[index];
+    if (r.finalizado) {
+      alert("Este registro está finalizado y no puede modificarse.");
+      return;
+    }
     document.getElementById("registroId").value = index;
     document.getElementById("name").value = r.name;
     document.getElementById("email").value = r.email;
     document.getElementById("message").value = r.message;
     document.getElementById("genero").value = r.genero;
 
-    const checkboxes = document.querySelectorAll(".actividad");
-    checkboxes.forEach(cb => {
+    document.querySelectorAll(".actividad").forEach(cb => {
       cb.checked = r.actividades.includes(cb.value);
     });
   }
 
   function eliminarRegistro(index) {
-    if (confirm("¿Estás seguro de eliminar este registro?")) {
+    if (registros[index].finalizado) {
+      alert("Este registro está finalizado y no puede eliminarse.");
+      return;
+    }
+    if (confirm("¿Estás seguro de eliminar tu registro?")) {
+      registrarCambio(index, "ELIMINAR", JSON.stringify(registros[index]), "");
       registros.splice(index, 1);
+      localStorage.removeItem("registroActual");
+      registroActual = null;
       guardarEnLocalStorage();
-      renderizarTabla();
+      renderUsuarioRegistro();
+      document.getElementById("crudForm").reset();
+      document.getElementById("registroId").value = "";
     }
   }
 
-  // Inicializa la tabla al cargar
-  renderizarTabla();
-</script>
-
-<!-- Script de validación -->
-<script>
-  document.getElementById("contactForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Evita el envío del formulario hasta validar
-
-    const alerta = document.getElementById("alertaCampos");
-    alerta.classList.add("d-none");
-
-    const name = document.getElementById("name");
-    const email = document.getElementById("email");
-    const message = document.getElementById("message");
-    const genero = document.getElementById("genero");
-    const actividades = document.querySelectorAll(".actividad");
-
-    let campos = [name, email, message, genero];
-    let actividadSeleccionada = false;
-
-    actividades.forEach(act => {
-      if (act.checked) actividadSeleccionada = true;
-    });
-
-    // Encuentra el primer campo vacío
-    let campoFaltante = campos.find(campo => !campo.value || campo.value === "");
-
-    if (campoFaltante) {
-      alerta.classList.remove("d-none");
-      campoFaltante.focus();
-      return;
+  function finalizarRegistro(index) {
+    if (confirm("¿Deseas finalizar tu registro? No podrás modificarlo después.")) {
+      registros[index].finalizado = true;
+      registrarCambio(index, "FINALIZAR", "", "Registro finalizado");
+      guardarEnLocalStorage();
+      renderUsuarioRegistro();
+      document.getElementById("crudForm").reset();
+      document.getElementById("registroId").value = "";
     }
+  }
 
-    if (!actividadSeleccionada) {
-      alerta.classList.remove("d-none");
-      actividades[0].focus();
-      return;
-    }
-
-    // Si todo está bien, puedes enviar el formulario o mostrar mensaje de éxito
-    // Por ahora mostramos un mensaje en consola
-    console.log("Formulario enviado correctamente");
-    alert("Formulario enviado correctamente");
-    this.reset();
-  });
+  // Inicializar vista
+  renderUsuarioRegistro();
 </script>
  
   <!-- =========================
