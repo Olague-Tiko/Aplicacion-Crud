@@ -432,32 +432,39 @@ Segundo Proyecto de bootcam
   <!-- =========================
        Contact Section
   ============================ -->
-  <section id="contact" class="py-5">
+   <section id="contact" class="py-5">
   <div class="container">
     <h2 class="text-center mb-5">Contacto</h2>
     <div class="row">
       <div class="col-md-8 offset-md-2">
-        <form>
+        <form id="contactForm">
+          <!-- Alerta de validación -->
+          <div id="alertaCampos" class="alert alert-danger d-none" role="alert">
+            Faltan campos por llenar.
+          </div>
+
           <!-- Campo de nombre -->
           <div class="form-group">
             <label for="name">Nombre</label>
-            <input type="text" class="form-control" id="name" placeholder="Ingresa tu nombre">
+            <input type="text" class="form-control" id="name" placeholder="Ingresa tu nombre" required>
           </div>
+
           <!-- Campo de correo -->
           <div class="form-group">
             <label for="email">Correo electrónico</label>
-            <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo">
+            <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo" required>
           </div>
+
           <!-- Campo de mensaje -->
           <div class="form-group">
-            <label for="message">¿Por qué deseas participar?</label>
-            <textarea class="form-control" id="message" rows="5" placeholder="Escribe tu mensaje"></textarea>
+            <label for="message">Mensaje</label>
+            <textarea class="form-control" id="message" rows="5" placeholder="Escribe tu mensaje" required></textarea>
           </div>
 
           <!-- Género literario favorito -->
           <div class="form-group">
             <label for="genero">Género literario favorito</label>
-            <select class="form-control" id="genero" name="genero">
+            <select class="form-control" id="genero" required>
               <option value="" disabled selected>Selecciona un género</option>
               <option value="fantasia">Fantasía</option>
               <option value="ciencia-ficcion">Ciencia Ficción</option>
@@ -472,15 +479,15 @@ Segundo Proyecto de bootcam
           <div class="form-group">
             <label>¿En qué actividad deseas participar?</label><br>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="circulo" name="actividad" value="circulo">
+              <input class="form-check-input actividad" type="checkbox" id="circulo" value="circulo">
               <label class="form-check-label" for="circulo">Círculo de lectura</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="blog" name="actividad" value="blog">
+              <input class="form-check-input actividad" type="checkbox" id="blog" value="blog">
               <label class="form-check-label" for="blog">Reseñas en blog</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="video" name="actividad" value="video">
+              <input class="form-check-input actividad" type="checkbox" id="video" value="video">
               <label class="form-check-label" for="video">Video-reseñas</label>
             </div>
           </div>
@@ -492,6 +499,50 @@ Segundo Proyecto de bootcam
     </div>
   </div>
 </section>
+
+<!-- Script de validación -->
+<script>
+  document.getElementById("contactForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evita el envío del formulario hasta validar
+
+    const alerta = document.getElementById("alertaCampos");
+    alerta.classList.add("d-none");
+
+    const name = document.getElementById("name");
+    const email = document.getElementById("email");
+    const message = document.getElementById("message");
+    const genero = document.getElementById("genero");
+    const actividades = document.querySelectorAll(".actividad");
+
+    let campos = [name, email, message, genero];
+    let actividadSeleccionada = false;
+
+    actividades.forEach(act => {
+      if (act.checked) actividadSeleccionada = true;
+    });
+
+    // Encuentra el primer campo vacío
+    let campoFaltante = campos.find(campo => !campo.value || campo.value === "");
+
+    if (campoFaltante) {
+      alerta.classList.remove("d-none");
+      campoFaltante.focus();
+      return;
+    }
+
+    if (!actividadSeleccionada) {
+      alerta.classList.remove("d-none");
+      actividades[0].focus();
+      return;
+    }
+
+    // Si todo está bien, puedes enviar el formulario o mostrar mensaje de éxito
+    // Por ahora mostramos un mensaje en consola
+    console.log("Formulario enviado correctamente");
+    alert("Formulario enviado correctamente");
+    this.reset();
+  });
+</script>
  
   <!-- =========================
        Footer
